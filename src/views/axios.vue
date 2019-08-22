@@ -18,6 +18,9 @@
           nextIcon: 'mdi-plus'
         }"
       >
+        <template v-slot:item.date="{ item }">
+          <v-chip>{{ cvtDate(item.date) }}</v-chip>
+        </template>
         <template v-slot:item.systolic="{ item }">
           <v-chip :color="getSystolicColor(item.systolic)" dark>{{
             item.systolic
@@ -35,6 +38,7 @@
 
 <script>
 import axios, * as axios_1 from 'axios'
+import dayjs from 'dayjs'
 
 export default {
   data: () => ({
@@ -56,6 +60,9 @@ export default {
   methods: {
     customFilter(value, search, item) {
       return value != null
+    },
+    cvtDate(date) {
+      return dayjs(date).format('YYYY-M-D')
     },
     getSystolicColor(bp) {
       if (bp > 134) return 'red'
