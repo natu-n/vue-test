@@ -10,7 +10,24 @@
         :items-per-page="14"
         search="search"
         :custom-filter="customFilter"
+        :footer-props="{
+          showFirstLastPage: true,
+          firstIcon: 'mdi-arrow-collapse-left',
+          lastIcon: 'mdi-arrow-collapse-right',
+          prevIcon: 'mdi-minus',
+          nextIcon: 'mdi-plus'
+        }"
       >
+        <template v-slot:item.systolic="{ item }">
+          <v-chip :color="getSystolicColor(item.systolic)" dark>{{
+            item.systolic
+          }}</v-chip>
+        </template>
+        <template v-slot:item.diastolic="{ item }">
+          <v-chip :color="getDiastolicColor(item.diastolic)" dark>{{
+            item.diastolic
+          }}</v-chip>
+        </template>
       </v-data-table>
     </v-container>
   </v-app>
@@ -39,6 +56,16 @@ export default {
   methods: {
     customFilter(value, search, item) {
       return value != null
+    },
+    getSystolicColor(bp) {
+      if (bp > 134) return 'red'
+      else if (bp > 129) return 'orange'
+      else return 'green'
+    },
+    getDiastolicColor(bp) {
+      if (bp > 84) return 'red'
+      else if (bp > 79) return 'orange'
+      else return 'green'
     }
   }
 }
