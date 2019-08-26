@@ -31,6 +31,11 @@ export default new Router({
       path: '/axios',
       name: 'axios',
       component: () => import('@/views/axios.vue')
+    },
+    {
+      path: '/line',
+      name: 'line',
+      component: () => import('@/views/line.vue')
     }
   ]
 })

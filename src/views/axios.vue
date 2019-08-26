@@ -3,31 +3,35 @@
     <v-container>
       <v-data-table
         class="elevation-1"
+        fixed-header="true"
+        height="500px"
         :dense="true"
-        :calculate-widths="true"
         :headers="headers"
         :items="info.data"
         :items-per-page="14"
         search="search"
+        sortBy="date"
+        sortDesc="true"
         :custom-filter="customFilter"
         :footer-props="{
           showFirstLastPage: true,
           firstIcon: 'mdi-arrow-collapse-left',
           lastIcon: 'mdi-arrow-collapse-right',
           prevIcon: 'mdi-minus',
-          nextIcon: 'mdi-plus'
+          nextIcon: 'mdi-plus',
+          itemsPerPageOptions: [7, 14, 30, -1]
         }"
       >
         <template v-slot:item.date="{ item }">
-          <v-chip>{{ cvtDate(item.date) }}</v-chip>
+          <td>{{ cvtDate(item.date) }}</td>
         </template>
         <template v-slot:item.systolic="{ item }">
-          <v-chip :color="getSystolicColor(item.systolic)" dark>{{
+          <v-chip :color="getSystolicColor(item.systolic)" dark small>{{
             item.systolic
           }}</v-chip>
         </template>
         <template v-slot:item.diastolic="{ item }">
-          <v-chip :color="getDiastolicColor(item.diastolic)" dark>{{
+          <v-chip :color="getDiastolicColor(item.diastolic)" dark small>{{
             item.diastolic
           }}</v-chip>
         </template>
@@ -43,9 +47,14 @@ import dayjs from 'dayjs'
 export default {
   data: () => ({
     headers: [
-      { text: 'date', align: 'left', value: 'date' },
-      { text: 'systolic', align: 'right', value: 'systolic', sortable: false },
-      { text: 'diastolic', align: 'right', value: 'diastolic', sortable: false }
+      { text: 'date', align: 'center', value: 'date' },
+      { text: 'systolic', align: 'center', value: 'systolic', sortable: false },
+      {
+        text: 'diastolic',
+        align: 'center',
+        value: 'diastolic',
+        sortable: false
+      }
     ],
     info: void 0
   }),
@@ -62,7 +71,7 @@ export default {
       return value != null
     },
     cvtDate(date) {
-      return dayjs(date).format('YYYY-M-D')
+      return dayjs(date).format('M/D/YYYY')
     },
     getSystolicColor(bp) {
       if (bp > 134) return 'red'

@@ -11,8 +11,9 @@
         >
           <template v-slot:activator="{ on }">
             <v-text-field
+              label="From To"
               v-model="date"
-              :label="date2"
+              :prefix="fromDate"
               prepend-icon="event"
               x-larg="true"
               readonly
@@ -36,13 +37,13 @@ import dayjs from 'dayjs'
 
 export default {
   data: () => ({
-    date: new Date().toISOString().substr(0, 10),
+    date: dayjs(new Date()).format('YYYY-MM-DD'),
     modal: false
   }),
   computed: {
-    date2: function() {
+    fromDate: function() {
       return dayjs(this.date)
-        .add(-6, 'day')
+        .add(-13, 'day')
         .format('YYYY-MM-DD')
     }
   }
