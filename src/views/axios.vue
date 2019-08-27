@@ -68,7 +68,8 @@ export default {
   },
   methods: {
     customFilter(value, search, item) {
-      return value != null
+      // return value != null
+      return value >= '2019-07-01'
     },
     cvtDate(date) {
       return dayjs(date).format('M/D/YYYY')
@@ -88,7 +89,7 @@ export default {
 </script>
 
 <style>
-tbody tr:nth-of-type(odd) {
+.v-data-table tbody tr:nth-of-type(odd) {
   background-color: rgba(0, 0, 0, 0.05);
 }
 </style>
