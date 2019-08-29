@@ -1,46 +1,43 @@
 <template>
-  <v-row class="fill-height">
-    <v-col>
-      <v-sheet height="64">
-        <v-toolbar flat color="white">
-          <v-btn outlined class="mr-4" @click="setToday">Today</v-btn>
-          <v-btn fab text small @click="prev">
-            <v-icon small>mdi-chevron-left</v-icon>
-          </v-btn>
-          <v-btn fab text small @click="next">
-            <v-icon small>mdi-chevron-right</v-icon>
-          </v-btn>
-          <v-toolbar-title>{{ title }}</v-toolbar-title>
-          <v-spacer></v-spacer>
-        </v-toolbar>
-      </v-sheet>
-      <v-sheet height="500" width="800">
-        <v-calendar
-          ref="calendar"
-          v-model="focus"
-          :now="today"
-          color="indigo"
-          :value="today"
-          :events="events"
-          :event-color="getEventColor"
-          type="month"
-          @change="updateRange"
-        ></v-calendar>
-      </v-sheet>
-    </v-col>
-  </v-row>
+  <v-card class="mx-auto" max-width="800" outlined>
+    <v-row class="fill-height">
+      <v-col>
+        <v-row class="pa-0 ma-0">
+          <v-col class="pa-0 ma-0">
+            <v-sheet height="64">
+              <v-toolbar flat color="white">
+                <v-btn outlined class="mr-4" @click="setToday">Today</v-btn>
+                <v-btn fab text small @click="prev">
+                  <v-icon small>mdi-chevron-left</v-icon>
+                </v-btn>
+                <v-btn fab text small @click="next">
+                  <v-icon small>mdi-chevron-right</v-icon>
+                </v-btn>
+                <v-toolbar-title>{{ title }}</v-toolbar-title>
+                <v-spacer></v-spacer>
+              </v-toolbar>
+            </v-sheet>
+          </v-col>
+          <v-col class="pa-0 ma-0"></v-col>
+        </v-row>
+        <v-sheet height="500" width="800">
+          <v-calendar
+            ref="calendar"
+            v-model="focus"
+            :now="today"
+            color="indigo"
+            :value="today"
+            :events="events"
+            :event-color="getEventColor"
+            type="month"
+            @change="updateRange"
+          ></v-calendar>
+        </v-sheet>
+      </v-col>
+    </v-row>
+  </v-card>
 </template>
-<!--
-<div
-  data-today="2019-08-01"
-  data-event="0"
-  class="v-event v-event-start v-event-end secondary white--text"
-  style="height: 20px; top: 0px; margin-bottom: 1px;"
-><div class="pl-1">125</div></div>
--->
-<!--
-https://script.google.com/macros/s/AKfycbz-Dn3YLNsx4wWJ3zTcgukvEY7LmrZaxSIGgwy_L6M_5b5hLsw/exec
--->
+
 <script>
 export default {
   data: () => ({

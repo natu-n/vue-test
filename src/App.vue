@@ -1,17 +1,17 @@
 <template>
   <v-app>
+    <!--  menu  -->
     <v-app-bar app>
-      <!--  menu  -->
       <v-btn @click.stop="drawer = !drawer" icon>
         <v-icon>list</v-icon>
       </v-btn>
+
       <v-navigation-drawer v-model="drawer" absolute temporary height="400">
         <v-list>
           <v-list-item v-for="item in items" :key="item.title" :to="item.link">
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
-
             <v-list-item-content>
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item-content>

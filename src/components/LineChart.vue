@@ -45,8 +45,7 @@ export default {
       },
       options: {
         title: {
-          display: true,
-          text: 'Line chart'
+          display: false
         },
         legend: {
           display: false

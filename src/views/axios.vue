@@ -1,10 +1,35 @@
 <template>
   <v-app>
     <v-container>
+      <v-dialog
+        ref="dialog"
+        v-model="modal"
+        :return-value.sync="toDate"
+        persistent
+        width="290px"
+      >
+        <template v-slot:activator="{ on }">
+          <v-text-field
+            v-model="toDate"
+            :prefix="fromDate"
+            prepend-icon="event"
+            x-larg="true"
+            readonly
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker v-model="toDate" :max="today" scrollable>
+          <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+          <v-btn text color="primary" @click="$refs.dialog.save(toDate)"
+            >OK</v-btn
+          >
+        </v-date-picker>
+      </v-dialog>
+
       <v-data-table
         class="elevation-1"
         fixed-header="true"
-        height="500px"
+        height="450px"
         :dense="true"
         :headers="headers"
         :items="info.data"
@@ -19,7 +44,7 @@
           lastIcon: 'mdi-arrow-collapse-right',
           prevIcon: 'mdi-minus',
           nextIcon: 'mdi-plus',
-          itemsPerPageOptions: [7, 14, 30, -1]
+          itemsPerPageOptions: [7, 14, 30]
         }"
       >
         <template v-slot:item.date="{ item }">
@@ -44,10 +69,13 @@
 import axios, * as axios_1 from 'axios'
 import dayjs from 'dayjs'
 
+const API_URL =
+  'https://script.google.com/macros/s/AKfycbz-Dn3YLNsx4wWJ3zTcgukvEY7LmrZaxSIGgwy_L6M_5b5hLsw/exec'
+
 export default {
   data: () => ({
     headers: [
-      { text: 'date', align: 'center', value: 'date' },
+      { text: 'date', align: 'center', value: 'date', sortable: false },
       { text: 'systolic', align: 'center', value: 'systolic', sortable: false },
       {
         text: 'diastolic',
@@ -56,20 +84,18 @@ export default {
         sortable: false
       }
     ],
-    info: void 0
+    info: [],
+    toDate: dayjs(new Date()).format('YYYY-MM-DD'),
+    today: dayjs(new Date()).format('YYYY-MM-DD')
   }),
-  mounted: function() {
+  async created() {
     var _this = this
-    axios
-      .get(
-        'https://script.google.com/macros/s/AKfycbz-Dn3YLNsx4wWJ3zTcgukvEY7LmrZaxSIGgwy_L6M_5b5hLsw/exec'
-      )
-      .then(response => (this.info = response))
+    let res = await axios.get(API_URL).then(response => (this.info = response))
   },
   methods: {
     customFilter(value, search, item) {
       // return value != null
-      return value >= '2019-07-01'
+      return value >= this.fromDate && value <= this.toDate
     },
     cvtDate(date) {
       return dayjs(date).format('M/D/YYYY')
@@ -83,6 +109,13 @@ export default {
       if (bp > 84) return 'red'
       else if (bp > 79) return 'orange'
       else return 'green'
+    }
+  },
+  computed: {
+    fromDate: function() {
+      return dayjs(this.toDate)
+        .add(-29, 'day')
+        .format('YYYY-MM-DD')
     }
   }
 }
