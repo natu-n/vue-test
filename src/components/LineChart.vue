@@ -5,7 +5,15 @@ export default {
   name: 'LineChart',
   extends: Line,
   props: {
-    lb: []
+    data1: {
+      type: Array
+    },
+    data2: {
+      type: Array
+    },
+    lb: {
+      type: Array
+    }
   },
   data() {
     return {
@@ -16,29 +24,14 @@ export default {
             label: 'systolic',
             borderColor: 'red',
             lineTension: 0,
-            data: [
-              131,
-              128,
-              132,
-              116,
-              123,
-              124,
-              120,
-              112,
-              111,
-              115,
-              122,
-              123,
-              123,
-              118
-            ],
+            data: this.data1,
             fill: false
           },
           {
             label: 'diastolic',
             borderColor: 'indigo',
             lineTension: 0,
-            data: [89, 85, 84, 82, 86, 82, 81, 73, 74, 78, 81, 85, 85, 85],
+            data: this.data2,
             fill: false
           }
         ]

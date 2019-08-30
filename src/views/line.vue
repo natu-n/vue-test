@@ -1,87 +1,49 @@
 <template>
   <v-card class="mx-auto mt-4" color="grey lighten-4" max-width="600">
-    <v-menu
-      v-model="menu2"
-      :close-on-content-click="false"
-      transition="scale-transition"
-      offset-y
-      full-width
-      max-width="290px"
-      min-width="290px"
-    >
-      <template v-slot:activator="{ on }">
-        <v-text-field
-          v-model="computedDateFormatted"
-          prepend-icon="event"
-          readonly
-          v-on="on"
-        ></v-text-field>
-      </template>
-      <v-date-picker
-        v-model="date"
-        no-title
-        @input="menu2 = false"
-      ></v-date-picker>
-    </v-menu>
-    <div>
-      <line-chart
-        class="chart"
-        :lb="[
-          '7/12',
-          '7/13',
-          '7/14',
-          '7/15',
-          '7/16',
-          '7/17',
-          '7/18',
-          '7/19',
-          '7/20',
-          '7/21',
-          '7/22',
-          '7/23',
-          '7/24',
-          '7/25'
-        ]"
-      />
-    </div>
+    <line-chart
+      class="chart"
+      :lb="setLb"
+      :data1="data1"
+      :data2="data2"
+      :width="480"
+      :height="200"
+    />
   </v-card>
 </template>
 
 <script>
+import dayjs from 'dayjs'
 import LineChart from '@/components/LineChart'
 
 export default {
   components: { LineChart },
-  data: vm => ({
-    date: new Date().toISOString().substr(0, 10),
-    dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
-    menu2: false
+  data: () => ({
+    lbl: [13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0],
+    data1: [
+      131,
+      128,
+      132,
+      116,
+      123,
+      124,
+      120,
+      112,
+      111,
+      115,
+      122,
+      123,
+      123,
+      118
+    ],
+    data2: [89, 85, 84, 82, 86, 82, 81, 73, 74, 78, 81, 85, 85, 85]
   }),
-
   computed: {
-    computedDateFormatted() {
-      return this.formatDate(this.date)
-    }
-  },
-
-  watch: {
-    date(val) {
-      this.dateFormatted = this.formatDate(this.date)
-    }
-  },
-
-  methods: {
-    formatDate(date) {
-      if (!date) return null
-
-      const [year, month, day] = date.split('-')
-      return `${month}/${day}/${year}`
-    },
-    parseDate(date) {
-      if (!date) return null
-
-      const [month, day, year] = date.split('/')
-      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+    setLb: function() {
+      return this.lbl.map(function(element, index, array) {
+        return dayjs(new Date())
+          .add(-element, 'day')
+          .format('M/D')
+      })
     }
   }
 }
