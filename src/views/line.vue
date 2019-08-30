@@ -1,10 +1,12 @@
 <template>
   <v-card class="mx-auto mt-4" color="grey lighten-4" max-width="600">
+    <div>{{ toDate }}</div>
+    <div>{{ setLb(toDate) }}</div>
     <line-chart
       class="chart"
-      :lb="setLb"
       :data1="data1"
       :data2="data2"
+      :lb="setLb(toDate)"
       :width="480"
       :height="200"
     />
@@ -38,9 +40,15 @@ export default {
     data2: [89, 85, 84, 82, 86, 82, 81, 73, 74, 78, 81, 85, 85, 85]
   }),
   computed: {
-    setLb: function() {
+    toDate: function() {
+      return new Date()
+    }
+  },
+  methods: {
+    setLb: function(date) {
+      console.log(date)
       return this.lbl.map(function(element, index, array) {
-        return dayjs(new Date())
+        return dayjs(Date)
           .add(-element, 'day')
           .format('M/D')
       })
