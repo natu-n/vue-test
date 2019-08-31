@@ -1,52 +1,26 @@
 <script>
-import { Line } from 'vue-chartjs'
+import { Line, mixins } from 'vue-chartjs'
+const { reactiveProp } = mixins
 
 export default {
   name: 'LineChart',
+  mixins: [reactiveProp],
   extends: Line,
-  props: {
-    data1: {
-      type: Array
-    },
-    data2: {
-      type: Array
-    },
-    lb: {
-      type: Array
-    }
-  },
-  data() {
-    return {
-      chartData: {
-        labels: this.lb,
-        datasets: [
-          {
-            label: 'systolic',
-            borderColor: 'red',
-            lineTension: 0,
-            data: this.data1,
-            fill: false
-          },
-          {
-            label: 'diastolic',
-            borderColor: 'indigo',
-            lineTension: 0,
-            data: this.data2,
-            fill: false
-          }
-        ]
+  data: () => ({
+    options: {
+      title: {
+        display: false
       },
-      options: {
-        title: {
-          display: false
-        },
-        legend: {
-          display: false
-        }
-      }
+      legend: {
+        display: false
+      },
+      width: 480,
+      height: 200
     }
-  },
+  }),
+
   mounted: function() {
+    console.log(this.options)
     this.renderChart(this.chartData, this.options)
   }
 }

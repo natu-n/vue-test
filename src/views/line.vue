@@ -25,14 +25,7 @@
       </v-date-picker>
     </v-dialog>
 
-    <line-chart
-      class="chart"
-      :data1="data1"
-      :data2="data2"
-      :lb="setLb(toDate)"
-      :width="480"
-      :height="200"
-    />
+    <line-chart :chart-data="fillData()" />
   </v-card>
 </template>
 
@@ -62,7 +55,8 @@ export default {
     ],
     data2: [89, 85, 84, 82, 86, 82, 81, 73, 74, 78, 81, 85, 85, 85],
     toDate: dayjs(new Date()).format('YYYY-MM-DD'),
-    today: dayjs(new Date()).format('YYYY-MM-DD')
+    today: dayjs(new Date()).format('YYYY-MM-DD'),
+    datacollection: null
   }),
   computed: {},
   methods: {
@@ -77,6 +71,36 @@ export default {
       return dayjs(val)
         .add(-29, 'day')
         .format('YYYY-MM-DD')
+    },
+    fillData: function() {
+      console.log('fillData')
+      return {
+        labels: this.setLb(this.toDate),
+        datasets: [
+          {
+            title: {
+              display: false
+            },
+            legend: {
+              display: false
+            }
+          },
+          {
+            label: 'systolic',
+            borderColor: 'red',
+            lineTension: 0,
+            data: this.data1,
+            fill: false
+          },
+          {
+            label: 'diastolic',
+            borderColor: 'indigo',
+            lineTension: 0,
+            data: this.data2,
+            fill: false
+          }
+        ]
+      }
     }
   }
 }
