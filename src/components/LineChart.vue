@@ -13,9 +13,7 @@ export default {
       },
       legend: {
         display: false
-      },
-      width: 480,
-      height: 200
+      }
     }
   }),
 

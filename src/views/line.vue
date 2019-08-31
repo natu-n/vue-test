@@ -25,7 +25,7 @@
       </v-date-picker>
     </v-dialog>
 
-    <line-chart :chart-data="fillData()" />
+    <line-chart :chart-data="fillData()" :width="480" :height="200" />
   </v-card>
 </template>
 
