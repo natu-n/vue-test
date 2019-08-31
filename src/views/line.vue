@@ -1,7 +1,30 @@
 <template>
   <v-card class="mx-auto mt-4" color="grey lighten-4" max-width="600">
-    <div>{{ toDate }}</div>
-    <div>{{ setLb(toDate) }}</div>
+    <v-dialog
+      ref="dialog"
+      v-model="modal"
+      :return-value.sync="toDate"
+      persistent
+      width="290px"
+    >
+      <template v-slot:activator="{ on }">
+        <v-text-field
+          v-model="toDate"
+          :prefix="fromDate(toDate)"
+          prepend-icon="event"
+          x-larg="true"
+          readonly
+          v-on="on"
+        ></v-text-field>
+      </template>
+      <v-date-picker v-model="toDate" :max="today" scrollable>
+        <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+        <v-btn text color="primary" @click="$refs.dialog.save(toDate)"
+          >OK</v-btn
+        >
+      </v-date-picker>
+    </v-dialog>
+
     <line-chart
       class="chart"
       :data1="data1"
@@ -37,21 +60,23 @@ export default {
       123,
       118
     ],
-    data2: [89, 85, 84, 82, 86, 82, 81, 73, 74, 78, 81, 85, 85, 85]
+    data2: [89, 85, 84, 82, 86, 82, 81, 73, 74, 78, 81, 85, 85, 85],
+    toDate: dayjs(new Date()).format('YYYY-MM-DD'),
+    today: dayjs(new Date()).format('YYYY-MM-DD')
   }),
-  computed: {
-    toDate: function() {
-      return new Date()
-    }
-  },
+  computed: {},
   methods: {
-    setLb: function(date) {
-      console.log(date)
+    setLb: function(val) {
       return this.lbl.map(function(element, index, array) {
-        return dayjs(Date)
+        return dayjs(val)
           .add(-element, 'day')
           .format('M/D')
       })
+    },
+    fromDate: function(val) {
+      return dayjs(val)
+        .add(-29, 'day')
+        .format('YYYY-MM-DD')
     }
   }
 }
