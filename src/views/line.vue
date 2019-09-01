@@ -2,8 +2,6 @@
   <v-card class="mx-auto mt-4" color="grey lighten-4" max-width="600">
     <section>
       <div v-if="loading">Loading...</div>
-
-      <div v-else-if="fromDate && toDate">{{ customFilter(info.data) }}</div>
     </section>
     <v-dialog
       ref="dialog"
@@ -46,23 +44,6 @@ export default {
   components: { LineChart },
   data: () => ({
     lbl: [13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0],
-    data1: [
-      131,
-      128,
-      132,
-      116,
-      123,
-      124,
-      120,
-      112,
-      111,
-      115,
-      122,
-      123,
-      123,
-      118
-    ],
-    data2: [89, 85, 84, 82, 86, 82, 81, 73, 74, 78, 81, 85, 85, 85],
     toDate: dayjs(new Date()).format('YYYY-MM-DD'),
     fromDate: dayjs(new Date())
       .add(-13, 'day')
@@ -112,6 +93,32 @@ export default {
         .filter(x => x)
     },
 
+    setSystolic(value) {
+      var _this = this
+      // return value != null
+      console.log('setSystolic')
+      return value
+        .map(function(element, index, array) {
+          if (_this.fromDate <= element.date && element.date <= _this.toDate) {
+            return element.systolic
+          }
+        })
+        .filter(x => x)
+    },
+
+    setDiastolic(value) {
+      var _this = this
+      // return value != null
+      console.log('setDiastolic')
+      return value
+        .map(function(element, index, array) {
+          if (_this.fromDate <= element.date && element.date <= _this.toDate) {
+            return element.diastolic
+          }
+        })
+        .filter(x => x)
+    },
+
     fillData: function() {
       console.log('fillData')
       console.log(this.toDate)
@@ -130,14 +137,14 @@ export default {
             label: 'systolic',
             borderColor: 'red',
             lineTension: 0,
-            data: this.data1,
+            data: this.setSystolic(this.info.data),
             fill: false
           },
           {
             label: 'diastolic',
             borderColor: 'indigo',
             lineTension: 0,
-            data: this.data2,
+            data: this.setDiastolic(this.info.data),
             fill: false
           }
         ]
