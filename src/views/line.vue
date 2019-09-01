@@ -5,7 +5,6 @@
 
       <div v-else-if="fromDate && toDate">{{ customFilter(info.data) }}</div>
     </section>
-
     <v-dialog
       ref="dialog"
       v-model="modal"
@@ -85,8 +84,6 @@ export default {
 
   watch: {
     toDate: function(val) {
-      console.log('toDate')
-      console.log(val)
       this.fromDate = dayjs(val)
         .add(-13, 'day')
         .format('YYYY-MM-DD')
@@ -103,13 +100,12 @@ export default {
     },
 
     customFilter(value) {
+      var _this = this
       // return value != null
       console.log('customFilter')
-      console.log(this.toDate)
       return value
         .map(function(element, index, array) {
-          if ('2019-08-19' <= element.date && element.date <= '2019-09-01') {
-            console.log(element)
+          if (_this.fromDate <= element.date && element.date <= _this.toDate) {
             return element
           }
         })
