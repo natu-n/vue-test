@@ -1,5 +1,11 @@
 <template>
   <v-card class="mx-auto mt-4" color="grey lighten-4" max-width="600">
+    <section>
+      <div v-if="loading">Loading...</div>
+
+      <div v-else-if="fromDate && toDate">{{ customFilter(info.data) }}</div>
+    </section>
+
     <v-dialog
       ref="dialog"
       v-model="modal"
@@ -10,7 +16,7 @@
       <template v-slot:activator="{ on }">
         <v-text-field
           v-model="toDate"
-          :prefix="fromDate(toDate)"
+          :prefix="fromDate"
           prepend-icon="event"
           x-larg="true"
           readonly
@@ -30,8 +36,12 @@
 </template>
 
 <script>
+import axios, * as axios_1 from 'axios'
 import dayjs from 'dayjs'
 import LineChart from '@/components/LineChart'
+
+const API_URL =
+  'https://script.google.com/macros/s/AKfycbz-Dn3YLNsx4wWJ3zTcgukvEY7LmrZaxSIGgwy_L6M_5b5hLsw/exec'
 
 export default {
   components: { LineChart },
@@ -55,10 +65,34 @@ export default {
     ],
     data2: [89, 85, 84, 82, 86, 82, 81, 73, 74, 78, 81, 85, 85, 85],
     toDate: dayjs(new Date()).format('YYYY-MM-DD'),
+    fromDate: dayjs(new Date())
+      .add(-13, 'day')
+      .format('YYYY-MM-DD'),
     today: dayjs(new Date()).format('YYYY-MM-DD'),
-    datacollection: null
+    datacollection: null,
+    info: null,
+    loading: true
   }),
+
   computed: {},
+  async created() {
+    var _this = this
+    let res = await axios
+      .get(API_URL)
+      .then(response => (this.info = response))
+      .finally(() => (this.loading = false))
+  },
+
+  watch: {
+    toDate: function(val) {
+      console.log('toDate')
+      console.log(val)
+      this.fromDate = dayjs(val)
+        .add(-13, 'day')
+        .format('YYYY-MM-DD')
+    }
+  },
+
   methods: {
     setLb: function(val) {
       return this.lbl.map(function(element, index, array) {
@@ -67,13 +101,24 @@ export default {
           .format('M/D')
       })
     },
-    fromDate: function(val) {
-      return dayjs(val)
-        .add(-29, 'day')
-        .format('YYYY-MM-DD')
+
+    customFilter(value) {
+      // return value != null
+      console.log('customFilter')
+      console.log(this.toDate)
+      return value
+        .map(function(element, index, array) {
+          if ('2019-08-19' <= element.date && element.date <= '2019-09-01') {
+            console.log(element)
+            return element
+          }
+        })
+        .filter(x => x)
     },
+
     fillData: function() {
       console.log('fillData')
+      console.log(this.toDate)
       return {
         labels: this.setLb(this.toDate),
         datasets: [

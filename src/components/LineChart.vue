@@ -18,7 +18,6 @@ export default {
   }),
 
   mounted: function() {
-    console.log(this.options)
     this.renderChart(this.chartData, this.options)
   }
 }
