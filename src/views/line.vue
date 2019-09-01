@@ -1,34 +1,33 @@
 <template>
   <v-card class="mx-auto mt-4" color="grey lighten-4" max-width="600">
-    <section>
-      <div v-if="loading">Loading...</div>
-    </section>
-    <v-dialog
-      ref="dialog"
-      v-model="modal"
-      :return-value.sync="toDate"
-      persistent
-      width="290px"
-    >
-      <template v-slot:activator="{ on }">
-        <v-text-field
-          v-model="toDate"
-          :prefix="fromDate"
-          prepend-icon="event"
-          x-larg="true"
-          readonly
-          v-on="on"
-        ></v-text-field>
-      </template>
-      <v-date-picker v-model="toDate" :max="today" scrollable>
-        <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-        <v-btn text color="primary" @click="$refs.dialog.save(toDate)"
-          >OK</v-btn
-        >
-      </v-date-picker>
-    </v-dialog>
+    <template>
+      <v-dialog
+        ref="dialog"
+        v-model="modal"
+        :return-value.sync="toDate"
+        persistent
+        width="290px"
+      >
+        <template v-slot:activator="{ on }">
+          <v-text-field
+            v-model="toDate"
+            :prefix="fromDate"
+            prepend-icon="event"
+            x-larg="true"
+            readonly
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker v-model="toDate" :max="today" scrollable>
+          <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+          <v-btn text color="primary" @click="$refs.dialog.save(toDate)"
+            >OK</v-btn
+          >
+        </v-date-picker>
+      </v-dialog>
 
-    <line-chart :chart-data="fillData()" :width="480" :height="200" />
+      <line-chart :chart-data="fillData()" :width="480" :height="200" />
+    </template>
   </v-card>
 </template>
 
@@ -82,8 +81,6 @@ export default {
 
     customFilter(value) {
       var _this = this
-      // return value != null
-      console.log('customFilter')
       return value
         .map(function(element, index, array) {
           if (_this.fromDate <= element.date && element.date <= _this.toDate) {
@@ -95,8 +92,6 @@ export default {
 
     setSystolic(value) {
       var _this = this
-      // return value != null
-      console.log('setSystolic')
       return value
         .map(function(element, index, array) {
           if (_this.fromDate <= element.date && element.date <= _this.toDate) {
@@ -108,8 +103,6 @@ export default {
 
     setDiastolic(value) {
       var _this = this
-      // return value != null
-      console.log('setDiastolic')
       return value
         .map(function(element, index, array) {
           if (_this.fromDate <= element.date && element.date <= _this.toDate) {
@@ -120,8 +113,6 @@ export default {
     },
 
     fillData: function() {
-      console.log('fillData')
-      console.log(this.toDate)
       return {
         labels: this.setLb(this.toDate),
         datasets: [
