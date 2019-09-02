@@ -49,8 +49,7 @@ export default {
       .format('YYYY-MM-DD'),
     today: dayjs(new Date()).format('YYYY-MM-DD'),
     datacollection: null,
-    info: null,
-    loading: true
+    info: null
   }),
 
   computed: {},

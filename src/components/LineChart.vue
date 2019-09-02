@@ -13,6 +13,24 @@ export default {
       },
       legend: {
         display: false
+      },
+      scales: {
+        xAxes: [
+          {
+            display: true,
+            stacked: false,
+            gridLines: {
+              display: false
+            }
+          }
+        ],
+        yAxes: [
+          {
+            gridLines: {
+              drawBorder: false
+            }
+          }
+        ]
       }
     }
   }),
