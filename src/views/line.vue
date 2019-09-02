@@ -1,4 +1,4 @@
-<template>
+<template v-if="loading">
   <v-card class="mx-auto mt-4" color="grey lighten-4" max-width="600">
     <template>
       <v-dialog
@@ -49,7 +49,8 @@ export default {
       .format('YYYY-MM-DD'),
     today: dayjs(new Date()).format('YYYY-MM-DD'),
     datacollection: null,
-    info: null
+    info: null,
+    loading: false
   }),
 
   computed: {},
