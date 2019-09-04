@@ -1,30 +1,34 @@
 <template v-if="loading">
   <v-card class="mx-auto mt-4" color="grey lighten-4" max-width="600">
     <template>
-      <v-dialog
-        ref="dialog"
-        v-model="modal"
-        :return-value.sync="toDate"
-        persistent
-        width="290px"
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field
-            v-model="toDate"
-            :prefix="fromDate"
-            prepend-icon="event"
-            x-larg="true"
-            readonly
-            v-on="on"
-          ></v-text-field>
-        </template>
-        <v-date-picker v-model="toDate" :max="today" scrollable>
-          <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.dialog.save(toDate)"
-            >OK</v-btn
+      <v-row>
+        <v-col></v-col>
+        <v-col>
+          <v-dialog
+            ref="dialog"
+            v-model="modal"
+            :return-value.sync="toDate"
+            persistent
+            width="290px"
           >
-        </v-date-picker>
-      </v-dialog>
+            <template v-slot:activator="{ on }">
+              <v-text-field
+                v-model="toDate"
+                :prefix="fromDate"
+                prepend-icon="event"
+                x-larg="true"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker v-model="toDate" :max="today" scrollable>
+              <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+              <v-btn text color="primary" @click="$refs.dialog.save(toDate)"
+                >OK</v-btn
+              >
+            </v-date-picker>
+          </v-dialog>
+        </v-col>
+      </v-row>
 
       <line-chart :chart-data="fillData()" :width="480" :height="200" />
     </template>
@@ -42,15 +46,16 @@ const API_URL =
 export default {
   components: { LineChart },
   data: () => ({
+    today: dayjs(new Date()).format('YYYY-MM-DD'),
     lbl: [13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0],
-    toDate: dayjs(new Date()).format('YYYY-MM-DD'),
     fromDate: dayjs(new Date())
       .add(-13, 'day')
       .format('YYYY-MM-DD'),
-    today: dayjs(new Date()).format('YYYY-MM-DD'),
-    datacollection: null,
+    toDate: dayjs(new Date()).format('YYYY-MM-DD'),
+    xLabel: [],
     info: null,
-    loading: false
+    loading: false,
+    modal: false
   }),
 
   computed: {},
@@ -63,17 +68,17 @@ export default {
   },
 
   watch: {
-    toDate: function(val) {
-      this.fromDate = dayjs(val)
+    toDate: function(value) {
+      this.fromDate = dayjs(value)
         .add(-13, 'day')
         .format('YYYY-MM-DD')
     }
   },
 
   methods: {
-    setLb: function(val) {
+    setLb: function(value) {
       return this.lbl.map(function(element, index, array) {
-        return dayjs(val)
+        return dayjs(value)
           .add(-element, 'day')
           .format('M/D')
       })

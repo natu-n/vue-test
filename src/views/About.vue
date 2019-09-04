@@ -16,7 +16,6 @@
               :prefix="fromDate"
               prepend-icon="event"
               x-larg="true"
-              readonly
               v-on="on"
             ></v-text-field>
           </template>
@@ -37,12 +36,17 @@ import dayjs from 'dayjs'
 
 export default {
   data: () => ({
+    fromDate: dayjs(new Date())
+      .add(-13, 'day')
+      .format('YYYY-MM-DD'),
+
     date: dayjs(new Date()).format('YYYY-MM-DD'),
     modal: false
   }),
-  computed: {
-    fromDate: function() {
-      return dayjs(this.date)
+  computed: {},
+  watch: {
+    date: function(value) {
+      this.fromDate = dayjs(value)
         .add(-13, 'day')
         .format('YYYY-MM-DD')
     }

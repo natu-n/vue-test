@@ -86,7 +86,8 @@ export default {
     ],
     info: [],
     toDate: dayjs(new Date()).format('YYYY-MM-DD'),
-    today: dayjs(new Date()).format('YYYY-MM-DD')
+    today: dayjs(new Date()).format('YYYY-MM-DD'),
+    modal: false
   }),
   async created() {
     var _this = this
