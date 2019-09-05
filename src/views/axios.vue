@@ -11,7 +11,7 @@
         <template v-slot:activator="{ on }">
           <v-text-field
             v-model="toDate"
-            :prefix="fromDate"
+            :prefix="fromDate + ' - '"
             prepend-icon="event"
             x-larg="true"
             readonly
@@ -28,15 +28,14 @@
 
       <v-data-table
         class="elevation-1"
-        fixed-header="true"
-        height="450px"
         :dense="true"
         :headers="headers"
         :items="info.data"
         :items-per-page="14"
         search="search"
-        sortBy="date"
-        sortDesc="true"
+        :fixed-header="true"
+        sort-By="date"
+        :sort-Desc="true"
         :custom-filter="customFilter"
         :footer-props="{
           showFirstLastPage: true,
@@ -46,6 +45,7 @@
           nextIcon: 'mdi-plus',
           itemsPerPageOptions: [7, 14, 30]
         }"
+        height="450px"
       >
         <template v-slot:item.date="{ item }">
           <td>{{ cvtDate(item.date) }}</td>
@@ -85,6 +85,7 @@ export default {
       }
     ],
     info: [],
+    page: 1,
     toDate: dayjs(new Date()).format('YYYY-MM-DD'),
     today: dayjs(new Date()).format('YYYY-MM-DD'),
     modal: false
@@ -115,7 +116,7 @@ export default {
   computed: {
     fromDate: function() {
       return dayjs(this.toDate)
-        .add(-29, 'day')
+        .add(-1, 'month')
         .format('YYYY-MM-DD')
     }
   }

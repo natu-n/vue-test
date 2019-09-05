@@ -14,7 +14,7 @@
             <template v-slot:activator="{ on }">
               <v-text-field
                 v-model="toDate"
-                :prefix="fromDate"
+                :prefix="fromDate + ' - '"
                 prepend-icon="event"
                 x-larg="true"
                 v-on="on"
@@ -130,6 +130,7 @@ export default {
             }
           },
           {
+            yAxisID: 'first-y-axis',
             label: 'systolic',
             borderColor: 'red',
             lineTension: 0,
@@ -137,6 +138,7 @@ export default {
             fill: false
           },
           {
+            yAxisID: 'second-y-axis',
             label: 'diastolic',
             borderColor: 'indigo',
             lineTension: 0,

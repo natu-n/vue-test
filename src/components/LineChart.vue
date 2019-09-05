@@ -26,8 +26,27 @@ export default {
         ],
         yAxes: [
           {
+            id: 'first-y-axis',
+            display: true,
             gridLines: {
               drawBorder: false
+            },
+            ticks: {
+              autoSbeginatZero: false,
+              suggestedMin: 70,
+              suggestedMax: 150
+            }
+          },
+          {
+            id: 'second-y-axis',
+            display: false,
+            gridLines: {
+              drawBorder: false
+            },
+            ticks: {
+              autoSbeginatZero: false,
+              suggestedMin: 70,
+              suggestedMax: 150
             }
           }
         ]

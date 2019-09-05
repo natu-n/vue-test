@@ -13,7 +13,7 @@
             <v-text-field
               label="From To"
               v-model="date"
-              :prefix="fromDate"
+              :prefix="fromDate + ' - '"
               prepend-icon="event"
               x-larg="true"
               v-on="on"
