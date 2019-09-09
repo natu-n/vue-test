@@ -24,9 +24,9 @@
           <v-calendar
             ref="calendar"
             v-model="focus"
-            :now="today"
+            :now="$store.state.today"
             color="indigo"
-            :value="today"
+            :value="$store.state.today"
             :events="events"
             :event-color="getEventColor"
             type="month"
@@ -41,7 +41,6 @@
 <script>
 export default {
   data: () => ({
-    today: new Date().toISOString().substr(0, 10),
     focus: new Date().toISOString().substr(0, 10),
     start: null,
     end: null,
@@ -104,7 +103,7 @@ export default {
       return event.color
     },
     setToday() {
-      this.focus = this.today
+      this.focus = this.$store.state.today
     },
     prev() {
       this.$refs.calendar.prev()

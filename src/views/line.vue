@@ -20,7 +20,11 @@
                 v-on="on"
               ></v-text-field>
             </template>
-            <v-date-picker v-model="toDate" :max="today" scrollable>
+            <v-date-picker
+              v-model="toDate"
+              :max="$store.state.today"
+              scrollable
+            >
               <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
               <v-btn text color="primary" @click="$refs.dialog.save(toDate)"
                 >OK</v-btn
@@ -46,7 +50,6 @@ const API_URL =
 export default {
   components: { LineChart },
   data: () => ({
-    today: dayjs(new Date()).format('YYYY-MM-DD'),
     lbl: [13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0],
     fromDate: dayjs(new Date())
       .add(-13, 'day')
