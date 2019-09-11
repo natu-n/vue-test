@@ -37,8 +37,8 @@
         :items-per-page="14"
         search="search"
         :fixed-header="true"
-        :sortBy="date"
-        :descending="true"
+        :sort-by="['date']"
+        :sort-desc="['true']"
         :custom-filter="customFilter"
         :footer-props="{
           showFirstLastPage: true,
