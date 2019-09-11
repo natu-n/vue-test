@@ -7,7 +7,6 @@ Vue.use(Vuex)
 
 interface State {
   today: Date
-  fromDate: Date
   toDate: Date
   info: []
   loading: boolean
@@ -19,9 +18,6 @@ const API_URL =
 export default new Vuex.Store({
   state: {
     today: dayjs(new Date()).format('YYYY-MM-DD'),
-    fromDate: dayjs(new Date())
-      .add(-13, 'day')
-      .format('YYYY-MM-DD'),
     toDate: dayjs(new Date()).format('YYYY-MM-DD'),
     info: [],
     loading: false
@@ -29,33 +25,18 @@ export default new Vuex.Store({
 
   actions: {
     async getJSON() {
-      let JSON = {
-        _info: [],
-        get info() {
-          return this._info
-        },
-        set info(value) {
-          this._info = value
-        },
-
-        _loading: false,
-        get loading() {
-          return this._loading
-        },
-        set loading(value) {
-          this._loading = value
-        }
-      }
-      await axios
-        .get(API_URL)
-        .then(response => (JSON.info = response.data))
-        .finally(
-          () => (
-            (JSON.loading = true),
-            this.commit('setInfo', JSON.info),
-            this.commit('setLoading', JSON.loading)
+      if (!this.state.loading) {
+        await axios
+          .get(API_URL)
+          .then(response => (this.state.info = response.data))
+          .finally(
+            () => (
+              (this.state.loading = true),
+              this.commit('setInfo', this.state.info),
+              this.commit('setLoading', this.state.loading)
+            )
           )
-        )
+      }
     }
   },
 
@@ -67,6 +48,10 @@ export default new Vuex.Store({
     setLoading(state, loading) {
       state.loading = loading
       console.log('setLoading:' + state.loading)
+    },
+    setToDate(state, toDate) {
+      state.toDate = toDate
+      console.log('setToDate:' + state.toDate)
     }
   }
 })

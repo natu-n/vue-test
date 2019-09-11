@@ -26,9 +26,7 @@
               scrollable
             >
               <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="$refs.dialog.save(toDate)"
-                >OK</v-btn
-              >
+              <v-btn text color="primary" @click="setDate(toDate)">OK</v-btn>
             </v-date-picker>
           </v-dialog>
         </v-col>
@@ -40,13 +38,8 @@
 </template>
 
 <script>
-import axios, * as axios_1 from 'axios'
 import dayjs from 'dayjs'
 import LineChart from '@/components/LineChart'
-import { mapMutations, mapGetters } from 'vuex'
-
-const API_URL =
-  'https://script.google.com/macros/s/AKfycbz-Dn3YLNsx4wWJ3zTcgukvEY7LmrZaxSIGgwy_L6M_5b5hLsw/exec'
 
 export default {
   components: { LineChart },
@@ -57,28 +50,13 @@ export default {
       .format('YYYY-MM-DD'),
     toDate: dayjs(new Date()).format('YYYY-MM-DD'),
     xLabel: [],
-    info: null,
-    loading: false,
     modal: false
   }),
 
   computed: {},
 
   created: function() {
-    // var _this = this
-    // let res = await axios
-    //   .get(API_URL)
-    //   .then(response => (this.info = response))
-    //   .finally(() => (this.loading = false))
-    console.log('dispatch start')
     this.$store.dispatch('getJSON')
-    console.log('dispatch -end-')
-    // console.log('data :' + this.data.info)
-    // console.log('store:' + this.$store.state.info)
-    // this.data.info = this.$store.state.info
-    // this.data.loading = this.$store.state.loading
-    console.log('return:' + this.data)
-    console.log('      :' + this.$store.state.loadingx)
   },
 
   watch: {
@@ -90,6 +68,12 @@ export default {
   },
 
   methods: {
+    setDate(value) {
+      this.$refs.dialog.save(value)
+      this.$store.commit('setFromDate', this.fromDate)
+      this.$store.commit('setToDate', value)
+    },
+
     setLb: function(value) {
       return this.lbl.map(function(element, index, array) {
         return dayjs(value)

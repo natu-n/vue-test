@@ -20,9 +20,7 @@
         </template>
         <v-date-picker v-model="toDate" :max="$store.state.today" scrollable>
           <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.dialog.save(toDate)"
-            >OK</v-btn
-          >
+          <v-btn text color="primary" @click="setDate(toDate)">OK</v-btn>
         </v-date-picker>
       </v-dialog>
 
@@ -30,7 +28,7 @@
         class="elevation-1"
         :dense="true"
         :headers="headers"
-        :items="info.data"
+        :items="this.$store.state.info"
         :items-per-page="14"
         search="search"
         :fixed-header="true"
@@ -66,11 +64,7 @@
 </template>
 
 <script>
-import axios, * as axios_1 from 'axios'
 import dayjs from 'dayjs'
-
-const API_URL =
-  'https://script.google.com/macros/s/AKfycbz-Dn3YLNsx4wWJ3zTcgukvEY7LmrZaxSIGgwy_L6M_5b5hLsw/exec'
 
 export default {
   data: () => ({
@@ -84,16 +78,21 @@ export default {
         sortable: false
       }
     ],
-    info: [],
     page: 1,
     toDate: dayjs(new Date()).format('YYYY-MM-DD'),
     modal: false
   }),
-  async created() {
-    var _this = this
-    let res = await axios.get(API_URL).then(response => (this.info = response))
+
+  created: function() {
+    this.$store.dispatch('getJSON')
   },
+
   methods: {
+    setDate(value) {
+      this.$refs.dialog.save(value)
+      this.$store.commit('setToDate', value)
+    },
+
     customFilter(value, search, item) {
       // return value != null
       return value >= this.fromDate && value <= this.toDate
