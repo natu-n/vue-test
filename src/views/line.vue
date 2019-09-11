@@ -1,6 +1,6 @@
-<template v-if="loading">
+<template>
   <v-card class="mx-auto mt-4" color="grey lighten-4" max-width="600">
-    <template>
+    <template v-if="$store.state.loading">
       <v-row>
         <v-col></v-col>
         <v-col>
@@ -43,6 +43,7 @@
 import axios, * as axios_1 from 'axios'
 import dayjs from 'dayjs'
 import LineChart from '@/components/LineChart'
+import { mapMutations, mapGetters } from 'vuex'
 
 const API_URL =
   'https://script.google.com/macros/s/AKfycbz-Dn3YLNsx4wWJ3zTcgukvEY7LmrZaxSIGgwy_L6M_5b5hLsw/exec'
@@ -62,12 +63,22 @@ export default {
   }),
 
   computed: {},
-  async created() {
-    var _this = this
-    let res = await axios
-      .get(API_URL)
-      .then(response => (this.info = response))
-      .finally(() => (this.loading = false))
+
+  created: function() {
+    // var _this = this
+    // let res = await axios
+    //   .get(API_URL)
+    //   .then(response => (this.info = response))
+    //   .finally(() => (this.loading = false))
+    console.log('dispatch start')
+    this.$store.dispatch('getJSON')
+    console.log('dispatch -end-')
+    // console.log('data :' + this.data.info)
+    // console.log('store:' + this.$store.state.info)
+    // this.data.info = this.$store.state.info
+    // this.data.loading = this.$store.state.loading
+    console.log('return:' + this.data)
+    console.log('      :' + this.$store.state.loadingx)
   },
 
   watch: {
@@ -137,7 +148,7 @@ export default {
             label: 'systolic',
             borderColor: 'red',
             lineTension: 0,
-            data: this.setSystolic(this.info.data),
+            data: this.setSystolic(this.$store.state.info),
             fill: false
           },
           {
@@ -145,7 +156,7 @@ export default {
             label: 'diastolic',
             borderColor: 'indigo',
             lineTension: 0,
-            data: this.setDiastolic(this.info.data),
+            data: this.setDiastolic(this.$store.state.info),
             fill: false
           }
         ]
