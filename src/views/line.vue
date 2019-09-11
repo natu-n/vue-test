@@ -1,6 +1,9 @@
 <template>
   <v-card class="mx-auto mt-4" color="grey lighten-4" max-width="600">
     <template v-if="$store.state.loading">
+      <p v-if="this.toDate == null" v-show="true">
+        {{ (this.toDate = this.$store.state.toDate) }}
+      </p>
       <v-row>
         <v-col></v-col>
         <v-col>
@@ -48,7 +51,13 @@ export default {
     fromDate: dayjs(new Date())
       .add(-13, 'day')
       .format('YYYY-MM-DD'),
-    toDate: dayjs(new Date()).format('YYYY-MM-DD'),
+    _toDate: null,
+    get toDate() {
+      return this._toDate
+    },
+    set toDate(value) {
+      this._toDate = value
+    },
     xLabel: [],
     modal: false
   }),
@@ -64,13 +73,13 @@ export default {
       this.fromDate = dayjs(value)
         .add(-13, 'day')
         .format('YYYY-MM-DD')
+      console.log('loading')
     }
   },
 
   methods: {
     setDate(value) {
       this.$refs.dialog.save(value)
-      this.$store.commit('setFromDate', this.fromDate)
       this.$store.commit('setToDate', value)
     },
 

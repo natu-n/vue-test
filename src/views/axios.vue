@@ -1,28 +1,33 @@
 <template>
   <v-app>
     <v-container>
-      <v-dialog
-        ref="dialog"
-        v-model="modal"
-        :return-value.sync="toDate"
-        persistent
-        width="290px"
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field
-            v-model="toDate"
-            :prefix="fromDate + ' - '"
-            prepend-icon="event"
-            x-larg="true"
-            readonly
-            v-on="on"
-          ></v-text-field>
-        </template>
-        <v-date-picker v-model="toDate" :max="$store.state.today" scrollable>
-          <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="setDate(toDate)">OK</v-btn>
-        </v-date-picker>
-      </v-dialog>
+      <template v-if="$store.state.loading">
+        <p v-if="this.toDate == null" v-show="true">
+          {{ (this.toDate = this.$store.state.toDate) }}
+        </p>
+        <v-dialog
+          ref="dialog"
+          v-model="modal"
+          :return-value.sync="toDate"
+          persistent
+          width="290px"
+        >
+          <template v-slot:activator="{ on }">
+            <v-text-field
+              v-model="toDate"
+              :prefix="fromDate + ' - '"
+              prepend-icon="event"
+              x-larg="true"
+              readonly
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker v-model="toDate" :max="$store.state.today" scrollable>
+            <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="setDate(toDate)">OK</v-btn>
+          </v-date-picker>
+        </v-dialog>
+      </template>
 
       <v-data-table
         class="elevation-1"
@@ -32,8 +37,8 @@
         :items-per-page="14"
         search="search"
         :fixed-header="true"
-        sort-By="date"
-        :sort-Desc="true"
+        :sortBy="date"
+        :descending="true"
         :custom-filter="customFilter"
         :footer-props="{
           showFirstLastPage: true,
@@ -79,7 +84,7 @@ export default {
       }
     ],
     page: 1,
-    toDate: dayjs(new Date()).format('YYYY-MM-DD'),
+    toDate: null,
     modal: false
   }),
 
@@ -95,7 +100,7 @@ export default {
 
     customFilter(value, search, item) {
       // return value != null
-      return value >= this.fromDate && value <= this.toDate
+      return this.fromDate <= value && value <= this.toDate
     },
     cvtDate(date) {
       return dayjs(date).format('M/D/YYYY')
